@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEO Special Key Replacer</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f4f4;
+margin:0;
+padding:20px;
+}
+.container{
+max-width:1800px;
+margin:auto;
+}
+h1{
+text-align:center;
+margin-bottom:20px;
+}
+.main-layout{
+display:grid;
+grid-template-columns:auto 1fr;
+gap:20px;
+align-items:start;
+}
+.left-column{
+display:flex;
+flex-direction:column;
+align-items:flex-start;
+gap:20px;
+flex-wrap:nowrap;
+}
+.panel{
+background:white;
+padding:15px;
+border-radius:12px;
+box-shadow:0 2px 8px rgba(0,0,0,0.08);
+overflow:hidden;
+width:380px;
+min-width:380px;
+align-self:flex-start;
+margin-top:0;
+}
+.panel-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:10px;
+gap:10px;
+}
+.panel-title{
+font-size:18px;
+font-weight:bold;
+}
+textarea{
+width:100%;
+height:350px;
+padding:12px;
+border-radius:10px;
+border:1px solid #ccc;
+resize:none;
+font-size:14px;
+box-sizing:border-box;
+white-space:pre;
+overflow:auto;
+word-wrap:normal;
+overflow-wrap:normal;
+}
+.controls{
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+margin-bottom:20px;
+align-items:center;
+}
+.oldkey-row{
+display:flex;
+align-items:center;
+gap:8px;
+flex-wrap:wrap;
+}
+input{
+padding:12px;
+border-radius:10px;
+border:1px solid #ccc;
+font-size:14px;
+min-width:180px;
+}
+button{
+padding:10px 16px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-size:14px;
+font-weight:bold;
+}
+.generate-btn{ background:#007bff; color:white; }
+.toggle-btn{ background:#ff9800; color:white; }
+.show-btn{ background:#28a745; color:white; width:100%; }
+.clear-titles-btn{ background:#6c757d; color:white; margin-top:10px; width:100%; }
+
+.lock-btn{ background:#17a2b8; color:white; width:100%; margin-top:10px; }
+.copy-link-btn{ background:#6f42c1; color:white; width:100%; margin-top:5px; }
+
+.keyword-hidden{
+padding:0 !important;
+margin:0 !important;
+background:transparent !important;
+box-shadow:none !important;
+border:none !important;
+}
+#resultSection{
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+align-items:flex-start;
+}
+.group{
+background:white;
+border-radius:12px;
+padding:10px;
+box-shadow:0 2px 8px rgba(0,0,0,0.08);
+border:2px solid transparent;
+width:240px;
+min-width:240px;
+max-width:240px;
+height:420px;
+display:flex;
+flex-direction:column;
+transition:0.25s;
+}
+.group:hover{ transform:translateY(-2px); }
+.group.active{
+border-color:#ff4d4d;
+box-shadow:0 0 0 2px rgba(255,77,77,0.15), 0 0 18px rgba(255,77,77,0.35);
+}
+.group-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:8px;
+gap:5px;
+}
+.group-title{ font-size:14px; font-weight:bold; }
+.copy-btn{ background:#28a745; color:white; font-size:12px; padding:2px 4px; }
+.title-list{
+white-space:pre-wrap;
+line-height:1.55;
+background:#f9f9f9;
+padding:10px;
+border-radius:8px;
+overflow:auto;
+flex:1;
+font-size:12px;
+word-break:break-word;
+}
+.language-box{
+display:flex;
+flex-direction:row;
+align-items:center;
+gap:1px;
+flex-wrap:nowrap;
+}
+.language-box label{
+display:flex;
+align-items:center;
+gap:2px;
+font-weight:bold;
+background:#f3f3f3;
+padding:2px 4px;
+border-radius:8px;
+cursor:pointer;
+white-space:nowrap;
+}
+.top-language-box{ margin-top:8px; }
+.language-box input[type="checkbox"]{
+min-width:auto !important;
+width:14px;
+height:14px;
+margin:0;
+padding:0;
+}
+.custom-box{
+display:flex;
+align-items:center;
+gap:6px;
+background:#f3f3f3;
+padding:8px 12px;
+border-radius:8px;
+font-weight:bold;
+}
+.full-set-box{
+display:flex;
+align-items:center;
+gap:6px;
+background:#f3f3f3;
+padding:8px 12px;
+border-radius:8px;
+font-weight:bold;
+}
+.full-set-box input[type="number"]{
+min-width:90px;
+width:90px;
+padding:8px;
+}
+.message{ margin-top:10px; font-size:14px; font-weight:bold; }
+.success{ color:green; }
+.error{ color:red; }
+.hidden{ display:none; }
+
+@media(max-width:900px){
+.main-layout{ grid-template-columns:1fr; }
+.left-column{ flex-direction:column; }
+.controls{ flex-direction:column; align-items:stretch; }
+input{ width:100%; box-sizing:border-box; }
+button{ width:100%; }
+#resultSection{ justify-content:center; }
+.group{ width:100%; min-width:100%; max-width:100%; height:320px; }
+.top-language-box{ justify-content:center; flex-wrap:wrap; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h1>SEO Special Key Replacer</h1>
+
+<div class="controls">
+<div class="oldkey-row">
+<input type="text" id="oldKeywordInput" placeholder="Old Special Key" readonly>
+
+<div class="language-box top-language-box">
+<label><input type="checkbox" class="langCheck" id="frCheck">FR</label>
+<label><input type="checkbox" class="langCheck" id="itCheck">IT</label>
+<label><input type="checkbox" class="langCheck" id="plCheck">PL</label>
+<label><input type="checkbox" class="langCheck" id="esCheck">ES</label>
+</div>
+
+<div class="custom-box">
+<input type="checkbox" id="customKeywordCheck">
+Custom
+</div>
+
+<div class="full-set-box">
+<input type="checkbox" id="fullSetCopyCheck" onchange="toggleFullSetMode()">
+<label for="fullSetCopyCheck">Full Set Copy</label>
+<input type="number" id="fullSetCountInput" value="1" min="1" step="1" placeholder="Set Count">
+</div>
+
+<input type="number" id="groupSizeInput" placeholder="Titles Per Group">
+<button class="generate-btn" onclick="generateTitles()">Generate Groups</button>
+</div>
+</div>
+
+<div class="main-layout">
+<div class="left-column">
+
+<div class="panel" id="keywordsPanelBox">
+<div id="keywordFullContent">
+<div class="panel-header">
+<div class="panel-title" id="keywordsCountLabel">New Special Keywords (0)</div>
+<button class="toggle-btn" onclick="toggleKeywordsPanel()">Lock & Hide</button>
+</div>
+
+<textarea id="keywordsInput" placeholder="Example:
+premium sex video
+luxury Sex ViDEO"></textarea>
+<div id="keywordMessage" class="message"></div>
+</div>
+
+<button id="showKeywordBtn" class="show-btn hidden" onclick="toggleKeywordsPanel()">Show Keywords</button>
+</div>
+
+<div class="panel">
+<div class="panel-header">
+<div class="panel-title" id="titlesCountLabel">Titles With Old Special Key (0)</div>
+</div>
+
+<textarea id="titlesInput" placeholder="Example:
+oldkey cute cat logo
+oldkey modern fish logo"></textarea>
+
+<!-- ইনপুট লক এবং শেয়ারেবল লিঙ্ক বাটন -->
+<button id="lockTitlesBtn" class="lock-btn" onclick="toggleTitleLock()">Lock Titles & Generate Link</button>
+<button id="copyLinkBtn" class="copy-link-btn hidden" onclick="copySavedLink()">Copy Saved Title Link 🔗</button>
+<button class="clear-titles-btn" onclick="clearTitlesOnly()">Clear All Titles</button>
+</div>
+
+</div>
+<div id="resultSection"></div>
+</div>
+
+<script>
+let keywordsLocked = false;
+let titlesLocked = false;
+
+window.onload = function(){
+const savedKeywords = localStorage.getItem("savedKeywords");
+if(savedKeywords){
+document.getElementById("keywordsInput").value = savedKeywords;
+updateKeywordCount();
+lockKeywordPanel();
+}
+
+// URL Hash থেকে সেভ করা টাইটেল ডিটেক্ট করা
+loadTitlesFromURL();
+
+updateTitleCount();
+autoDetectOldKeyword();
+toggleFullSetMode();
+};
+
+document.getElementById("titlesInput").addEventListener("input", function(){
+updateTitleCount();
+autoDetectOldKeyword();
+});
+
+function toggleFullSetMode(){
+const fullSet = document.getElementById("fullSetCopyCheck").checked;
+const groupSize = document.getElementById("groupSizeInput");
+groupSize.disabled = fullSet;
+if(fullSet) groupSize.value = "";
+}
+
+function autoDetectOldKeyword(){
+const customMode = document.getElementById("customKeywordCheck").checked;
+if(customMode) return;
+
+const lines = document.getElementById("titlesInput").value
+.split("\n").map(line => line.trim()).filter(line => line !== "");
+
+const firstLine = lines.length ? lines[0] : "";
+const placeholderMatch = firstLine.match(/\{keyword\}/i);
+if(placeholderMatch){
+document.getElementById("oldKeywordInput").value = "{keyword}";
+return;
+}
+
+document.getElementById("oldKeywordInput").value = lines.length ? (lines[0].split(/\s+/)[0] || "") : "";
+}
+
+document.getElementById("customKeywordCheck").addEventListener("change", function(){
+const input = document.getElementById("oldKeywordInput");
+if(this.checked){
+input.readOnly = false;
+input.focus();
+}else{
+input.readOnly = true;
+autoDetectOldKeyword();
+}
+});
+
+document.querySelectorAll(".langCheck").forEach(box => {
+box.addEventListener("change", function(){
+if(this.checked){
+document.querySelectorAll(".langCheck").forEach(other => {
+if(other !== this) other.checked = false;
+});
+}
+});
+});
+
+function updateTitleCount(){
+const count = document.getElementById("titlesInput").value
+.split("\n").map(t => t.trim()).filter(t => t !== "").length;
+document.getElementById("titlesCountLabel").innerText = `Titles With Old Special Key (${count})`;
+}
+
+function updateKeywordCount(){
+const count = document.getElementById("keywordsInput").value
+.split("\n").map(k => k.trim()).filter(k => k !== "").length;
+document.getElementById("keywordsCountLabel").innerText = `New Special Keywords (${count})`;
+}
+
+document.getElementById("keywordsInput").addEventListener("blur", validateKeywords);
+
+function validateKeywords(){
+const textarea = document.getElementById("keywordsInput");
+const message = document.getElementById("keywordMessage");
+
+const lines = textarea.value.split("\n").map(line => line.trim()).filter(line => line !== "");
+let uniqueLines = [];
+let seen = new Set();
+let duplicatesFound = false;
+
+for(let line of lines){
+const lower = line.toLowerCase();
+if(!seen.has(lower)){
+seen.add(lower);
+uniqueLines.push(line);
+}else{
+duplicatesFound = true;
+}
+}
+
+textarea.value = uniqueLines.join("\n");
+updateKeywordCount();
+
+if(duplicatesFound){
+message.innerText = "Duplicate Key Removed";
+message.className = "message error";
+}else{
+message.innerText = "All Keywords Unique";
+message.className = "message success";
+}
+}
+
+function applyLanguageTransform(text){
+if(document.getElementById("frCheck").checked) text = text.replace(/\bsex\b/gi, "Sexe");
+if(document.getElementById("itCheck").checked) text = text.replace(/\bsex\b/gi, "S𝙴SSO");
+if(document.getElementById("plCheck").checked){
+text = text.replace(/\bsex\b/gi, "S𝙴KS");
+text = text.replace(/\bvideo\b/gi, "WIDEO");
+}
+if(document.getElementById("esCheck").checked){
+text = text.replace(/\bsex\b/gi, "Sexo");
+text = text.replace(/\bvideo\b/gi, "Vídeo");
+}
+return text;
+}
+
+function lockKeywordPanel(){
+keywordsLocked = true;
+document.getElementById("keywordFullContent").classList.add("hidden");
+document.getElementById("showKeywordBtn").classList.remove("hidden");
+document.getElementById("keywordsPanelBox").classList.add("keyword-hidden");
+}
+
+function unlockKeywordPanel(){
+keywordsLocked = false;
+document.getElementById("keywordFullContent").classList.remove("hidden");
+document.getElementById("showKeywordBtn").classList.add("hidden");
+document.getElementById("keywordsPanelBox").classList.remove("keyword-hidden");
+}
+
+function toggleKeywordsPanel(){
+const keywords = document.getElementById("keywordsInput").value.trim();
+if(!keywordsLocked){
+if(keywords === ""){
+alert("Please enter keywords first");
+return;
+}
+validateKeywords();
+localStorage.setItem("savedKeywords", document.getElementById("keywordsInput").value);
+lockKeywordPanel();
+}else{
+unlockKeywordPanel();
+}
+}
+
+/* ===== Title Lock & URL Generation Logic ===== */
+
+function toggleTitleLock(){
+const titlesInput = document.getElementById("titlesInput");
+const lockBtn = document.getElementById("lockTitlesBtn");
+const copyLinkBtn = document.getElementById("copyLinkBtn");
+
+if(!titlesLocked){
+const text = titlesInput.value.trim();
+if(text === ""){
+alert("Please enter titles before locking");
+return;
+}
+titlesLocked = true;
+titlesInput.readOnly = true;
+titlesInput.style.backgroundColor = "#e9ecef";
+lockBtn.innerText = "Unlock Titles 🔓";
+lockBtn.style.background = "#ff9800";
+copyLinkBtn.classList.remove("hidden");
+
+// URL Hash-এ ডাটা সেভ করা
+const encodedData = encodeURIComponent(text);
+window.location.hash = "titles=" + encodedData;
+}else{
+titlesLocked = false;
+titlesInput.readOnly = false;
+titlesInput.style.backgroundColor = "#ffffff";
+lockBtn.innerText = "Lock Titles & Generate Link 🔒";
+lockBtn.style.background = "#17a2b8";
+copyLinkBtn.classList.add("hidden");
+window.location.hash = "";
+}
+}
+
+function loadTitlesFromURL(){
+if(window.location.hash.startsWith("#titles=")){
+try{
+const rawData = window.location.hash.replace("#titles=", "");
+const decodedData = decodeURIComponent(rawData);
+if(decodedData){
+const titlesInput = document.getElementById("titlesInput");
+titlesInput.value = decodedData;
+toggleTitleLock(); // স্বয়ংক্রিয়ভাবে লক করে দেবে
+}
+}catch(e){
+console.error("Invalid URL Hash Data");
+}
+}
+}
+
+function copySavedLink(){
+const link = window.location.href;
+if(navigator.clipboard && window.isSecureContext){
+navigator.clipboard.writeText(link).then(() => {
+alert("Saved Link Copied to Clipboard! You can bookmark or save this URL.");
+});
+}else{
+fallbackCopyText(link);
+alert("Saved Link Copied to Clipboard!");
+}
+}
+
+/* ============================================= */
+
+function escapeRegExp(text){
+return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function replaceOldKeyword(title, oldKeyword, newKeyword){
+if(!oldKeyword) return title;
+const escapedOld = escapeRegExp(oldKeyword);
+const placeholders = [oldKeyword, "{keyword}", "{KEYWORD}"];
+
+for(const placeholder of placeholders){
+const regex = new RegExp(escapeRegExp(placeholder), "gi");
+title = title.replace(regex, newKeyword);
+}
+
+const regex = new RegExp(`(^|\\s)${escapedOld}(?=\\s|$)`, "giu");
+return title.replace(regex, (match, prefix) => `${prefix}${newKeyword}`);
+}
+
+// নাম্বার/লেটার দিয়ে শুরু ও শেষ এবং মাঝে সিম্বলযুক্ত ইউনিক কোড জেনারেটর
+function generateUniqueCode(length = 10) {
+    const alphaNumeric = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const allChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+    
+    if (length < 3) length = 3;
+
+    const startChar = alphaNumeric.charAt(Math.floor(Math.random() * alphaNumeric.length));
+    const endChar = alphaNumeric.charAt(Math.floor(Math.random() * alphaNumeric.length));
+
+    let middle = '';
+    for (let i = 0; i < length - 2; i++) {
+        middle += allChars.charAt(Math.floor(Math.random() * allChars.length));
+    }
+
+    return `${startChar}${middle}${endChar}`;
+}
+
+function buildFinalTitles(titles, keywords, oldKeyword){
+const finalTitles = [];
+for(let i = 0; i < titles.length; i++){
+let updatedTitle = replaceOldKeyword(titles[i], oldKeyword, keywords[i % keywords.length]);
+const randomCode = generateUniqueCode(10);
+finalTitles.push(`${updatedTitle} ${randomCode}`);
+}
+return finalTitles;
+}
+
+function generateTitles(){
+const titles = document.getElementById("titlesInput").value
+.split("\n").map(t => t.trim()).filter(t => t !== "");
+
+const liveKeywords = document.getElementById("keywordsInput").value.trim();
+if(liveKeywords !== "") localStorage.setItem("savedKeywords", liveKeywords);
+
+const keywordsData = localStorage.getItem("savedKeywords");
+if(!keywordsData){
+alert("Please enter keywords");
+return;
+}
+
+const keywords = keywordsData.split("\n")
+.map(k => applyLanguageTransform(k.trim()))
+.filter(k => k !== "");
+
+const oldKeyword = document.getElementById("oldKeywordInput").value.trim();
+const fullSetCopy = document.getElementById("fullSetCopyCheck").checked;
+const fullSetCount = Math.max(1, parseInt(document.getElementById("fullSetCountInput").value, 10) || 1);
+const groupSize = parseInt(document.getElementById("groupSizeInput").value, 10);
+const resultSection = document.getElementById("resultSection");
+resultSection.innerHTML = "";
+
+if(titles.length === 0 || keywords.length === 0 || oldKeyword === ""){
+alert("Please enter all required fields");
+return;
+}
+
+const fragment = document.createDocumentFragment();
+
+if(fullSetCopy){
+for(let g = 0; g < fullSetCount; g++){
+const shuffledTitles = [...titles];
+const shuffledKeywords = [...keywords];
+shuffleArray(shuffledTitles);
+shuffleArray(shuffledKeywords);
+const finalTitles = buildFinalTitles(shuffledTitles, shuffledKeywords, oldKeyword);
+
+const groupDiv = document.createElement("div");
+groupDiv.className = "group";
+const groupId = "group_" + g;
+
+groupDiv.innerHTML = `
+<div class="group-header">
+<div class="group-title">Full Set ${g + 1} (${finalTitles.length} lines)</div>
+<button class="copy-btn" onclick="copyGroup('${groupId}', this)">Copy</button>
+</div>
+<div class="title-list" id="${groupId}">${finalTitles.join("\n")}</div>
+`;
+fragment.appendChild(groupDiv);
+}
+}else{
+if(!groupSize || groupSize <= 0){
+alert("Please enter Titles Per Group");
+return;
+}
+
+const totalGroups = Math.ceil(titles.length / groupSize);
+
+for(let g = 0; g < totalGroups; g++){
+const start = g * groupSize;
+const end = start + groupSize;
+const groupTitles = titles.slice(start, end);
+const shuffledKeywords = [...keywords];
+shuffleArray(shuffledKeywords);
+const finalTitles = buildFinalTitles(groupTitles, shuffledKeywords, oldKeyword);
+
+const groupDiv = document.createElement("div");
+groupDiv.className = "group";
+const groupId = "group_" + g;
+
+groupDiv.innerHTML = `
+<div class="group-header">
+<div class="group-title">Group ${g + 1} (${finalTitles.length} lines)</div>
+<button class="copy-btn" onclick="copyGroup('${groupId}', this)">Copy</button>
+</div>
+<div class="title-list" id="${groupId}">${finalTitles.join("\n")}</div>
+`;
+fragment.appendChild(groupDiv);
+}
+}
+
+resultSection.appendChild(fragment);
+}
+
+function shuffleArray(array){
+for(let i = array.length - 1; i > 0; i--){
+const j = Math.floor(Math.random() * (i + 1));
+[array[i], array[j]] = [array[j], array[i]];
+}
+}
+
+function fallbackCopyText(text){
+const ta = document.createElement("textarea");
+ta.value = text;
+ta.setAttribute("readonly", "");
+ta.style.position = "fixed";
+ta.style.left = "-9999px";
+document.body.appendChild(ta);
+ta.select();
+ta.setSelectionRange(0, ta.value.length);
+let ok = false;
+try{
+ok = document.execCommand("copy");
+}catch(e){
+ok = false;
+}
+document.body.removeChild(ta);
+return ok;
+}
+
+function onCopySuccess(button){
+document.querySelectorAll(".group").forEach(g => g.classList.remove("active"));
+button.closest(".group").classList.add("active");
+button.innerText = "Copied ✓";
+document.querySelectorAll(".langCheck").forEach(box => box.checked = false);
+setTimeout(() => { button.innerText = "Copy"; }, 2000);
+}
+
+function copyGroup(groupId, button){
+const text = document.getElementById(groupId).innerText;
+
+if(navigator.clipboard && window.isSecureContext){
+navigator.clipboard.writeText(text)
+.then(() => onCopySuccess(button))
+.catch(() => {
+if(fallbackCopyText(text)) onCopySuccess(button);
+else alert("Copy failed");
+});
+}else{
+if(fallbackCopyText(text)) onCopySuccess(button);
+else alert("Copy failed");
+}
+}
+
+function clearTitlesOnly(){
+document.getElementById("titlesInput").value = "";
+document.getElementById("oldKeywordInput").value = "";
+window.location.hash = "";
+if(titlesLocked) toggleTitleLock();
+updateTitleCount();
+}
+</script>
+
+</body>
+</html>
